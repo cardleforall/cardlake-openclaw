@@ -1,0 +1,13 @@
+name: cardlake
+label: Cardlake for OpenClaw
+version: 0.1.0
+author: cardleforall
+homepage: https://github.com/cardleforall/cardlake-openclaw
+description: >
+  Your Cardlake cards in OpenClaw, delivered as visual Telegram cards with
+  inline buttons. Feed, Today's digest, Deal me 5, saving cards, and a
+  morning automation — all with rich card layouts and one-tap actions.
+needs:
+  - telegram
+  - web_fetch
+  - env: CARDLAKE_API_TOKEN
