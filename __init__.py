@@ -51,9 +51,16 @@ def _rpc(method: str, params: dict | None = None) -> dict:
     if err:
         return {"error": err.get("message", str(err))}
 
-    content = data.get("result", {}).get("content", [])
+    result = data.get("result") or {}
+    content = result.get("content") or []
     # Extract text content
     texts = [item["text"] for item in content if item.get("type") == "text"]
+    # Tool failures (e.g. "Error: Card not found") come back as a normal result
+    # flagged isError; they must not be mistaken for success.
+    if result.get("isError"):
+        return {"error": texts[0] if texts else "Cardlake reported an error"}
+    if isinstance(result.get("structuredContent"), dict):
+        return result["structuredContent"]
     if not texts:
         return {"error": "No text content in response"}
 

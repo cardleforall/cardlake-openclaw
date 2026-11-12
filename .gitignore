@@ -9,3 +9,5 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+.cardlake_state.json
+node_modules/

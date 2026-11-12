@@ -1,0 +1,19 @@
+{
+  "id": "cardlake",
+  "name": "Cardlake",
+  "description": "Browse your Cardlake feed in Telegram with /cardlake and mark cards done or snooze them.",
+  "activation": {
+    "onStartup": true
+  },
+  "commandAliases": [
+    {
+      "name": "cardlake",
+      "kind": "runtime-slash"
+    }
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
