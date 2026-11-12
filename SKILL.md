@@ -1,38 +1,37 @@
 # Cardlake for OpenClaw
 
-Cardlake cards in OpenClaw — visual Telegram messages with inline buttons, daily morning digest, and AI-powered card saving.
+Cardlake cards in OpenClaw: a `/cardlake` Telegram feed browser with Done and Snooze buttons, text commands, and a morning digest.
 
 ## Prerequisites
 
-- `CARDLAKE_API_TOKEN` environment variable set (get it from cardlake.app)
-- Telegram channel configured in OpenClaw
+- `CARDLAKE_API_TOKEN` set in the gateway environment (from cardlake.app)
+- `CARDLAKE_TELEGRAM_USER_ID` set to the owner's numeric Telegram user ID
+- The `cardlake` plugin from this repository installed and enabled (see README.md)
 
-## Commands
+## Telegram
 
-Available through chat:
+- **`/cardlake`**: browse the feed one card at a time in a private chat, with ◀ Prev, 🔄 and Next ▶
+- **`/cardlake <filter>`**: `reminders`, `learning`, `work`, `family`, `bookmarks`, `misc`, `github`, `files`, `favorites`
 
-- **`!cardlake feed`** — Show feed as visual card panels with buttons
-- **`!cardlake feed <filter>`** — Filter: `reminders`, `learning`, `work`, `family`, `bookmarks`, `favorites`, `snoozed`
-- **`!cardlake today`** — Overdue/due today reminders
-- **`!cardlake deal`** — Random cards to review
-- **`!cardlake save <text>`** — Save as a card (AI-classified)
-- **`!cardlake snooze <text>`** — Snooze a matching card
+Buttons on the shown card:
+- **✅ Done**: complete a reminder or mark a learning as watched
+- **⏰ 1 day**: snooze for a day
+- **📅 7 days**: snooze for a week
+- **📌 Pin / Unpin**: pin or unpin the card
+- **↩️ Undo**: shown after a Done or snooze; reverses it
 
-### Card buttons
+The plugin handles these taps itself. Do not handle `callback_data` starting with `cardlake:` and do not run the Python `tap`, `button_handler.py` or `cardlake_bot.py done/snooze` scripts for button taps: they identify cards by message index and can act on the wrong card. If a user asks to act on a card shown by `/cardlake`, tell them to use its buttons or the Cardlake app.
 
-Each shown card gets inline buttons:
-- **✅ Done** — complete a reminder or mark learning as watched
-- **⏰ Tomorrow** — snooze 1 day
-- **📅 Next week** — snooze 7 days
-- **↩ Undo** — revert the last action
+## Text commands
+
+Run from this directory:
+
+- `python3 cardlake.py feed [filter]`: feed as text
+- `python3 cardlake.py today`: overdue or due today
+- `python3 cardlake.py deal`: five random cards
+- `python3 cardlake.py save <text>`: save as a Misc card
+- `python3 cardlake.py snooze <text>`: snooze the best search match for a day
 
 ## Morning automation
 
-Creates a daily digest of overdue/due cards. Set up via:
-```
-openclaw automations add ... 
-```
-
-## Connection
-
-Requires a Cardlake account. The API token goes in your gateway env.
+`morning.sh` prints a digest of overdue and due-today reminders, or nothing. Schedule it with `openclaw automations`.
